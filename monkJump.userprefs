@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/tutorialScripts/PlayerAnimation.cs">
+    <Files>
+      <File FileName="Assets/Scripts/tutorialScripts/PlayerActions.cs" Line="21" Column="52" />
+      <File FileName="Assets/Scripts/tutorialScripts/PlayerAnimation.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/tutorialScripts/events/PlayerFireEvent.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/tutorialScripts/MonkController.cs" Line="46" Column="1" />
+      <File FileName="../../Desktop/mvn_better/Assets/scripts/MonkController.cs" Line="20" Column="20" />
+      <File FileName="../mvn_better/Assets/scripts/MonkController.cs" Line="46" Column="1" />
+      <File FileName="Assets/Scripts/tutorialScripts/PlayerMovement.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/tutorialScripts/InputManager.cs" Line="47" Column="58" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
