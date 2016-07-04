@@ -1,35 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Bot{
+public class AIBrain{ 
+   private AIState state;
+   private Component c;
 
-}
+   public AIBrain(Component c)
+   {
+         this.c = c; 
+   } 
 
-// Move AIState up to its own thing 
-public abstract class AIState{
+   public Component getComponent() { return this.c; }
 
-    // State machine type thing for AI
-    // design questions: does checkTransition return a bool and you check each? 
-    // Or one central one
+   public void transitionToState(AIState s)
+   {
+        this.state=s;
+        s.start();
+   } 
 
-    protected Animator animator;
-    protected Component c;
-    protected Bot n;
-
-    public abstract void checkTransition();
-    public AIState(Component c)
-    {
-        this.c = c ;
-        n = (Bot) c;
-    }
-    public abstract void start();
-    public abstract void update();
-    public abstract void end();
-
-    public void setAnimator(Animator a)
-    {
-        animator = a;
-    }
+   public void setAIState(AIState state)
+   {
+       this.state = state;
+       state.start();
+   }
+   public void update()
+   {
+        state.checkTransition();
+        state.update();
+   }
 
     public static GameObject getPlayer()
     {
@@ -43,17 +41,49 @@ public abstract class AIState{
     }
 	public Vector3 vectorToPlayer()
 	{
-		return n.transform.position - getPlayer ().transform.position;
+		return c.gameObject.transform.position - getPlayer ().transform.position;
 	}
+
+    public void turnToPlayer()
+    {
+        Vector3 v = vectorToPlayer ();
+		c.gameObject.transform.forward = v.normalized;
+		c.gameObject.transform.Rotate (new Vector3 (0, 180));
+    }
+	
+}
+
+public abstract class AIState{
+
+    // State machine type thing for AI
+    // design questions: does checkTransition return a bool and you check each? 
+    // Or one central one
+
+    protected AIBrain b;
+    protected Animator animator;
+    protected Component c;
+    protected GameObject n;
+
+    public abstract void checkTransition();
+    public AIState(AIBrain b)
+    {
+        this.b = b;
+        this.c = b.getComponent() ;
+        n = c.gameObject;
+    }
+    public abstract void start();
+    public abstract void update();
+    public abstract void end();
+
 }
 
 public class RestingState: AIState{
 
-    public RestingState(Component c) : base(c){}
+    public RestingState(AIBrain b) : base(b){}
     public override void checkTransition()
     {
-        if(distanceFromPlayer() < 15)
-            ((Ninja) c).transitionToState(new RunningState(c));
+        if(b.distanceFromPlayer() < 15)
+            b.transitionToState(new RunningState(b));
     }
     public override void start()
     {
@@ -70,26 +100,26 @@ public class RestingState: AIState{
 }
 
 public class RunningState: AIState{
-    public RunningState(Component c) : base(c){}
+    public RunningState(AIBrain b) : base(b){}
     public override void start()
     {
         c.GetComponent<Animator>().Play("running");
     }
     public override void checkTransition()
     {
-        if(distanceFromPlayer() >= 15)
-            n.transitionToState(new RestingState(c));
+        if(b.distanceFromPlayer() >= 15)
+            b.transitionToState(new RestingState(b));
 
     }
     public override void update()
     {
         // Get monk position, run towards until close. Then attack
         
-        n.turnToPlayer();
-
-		Vector3 v = vectorToPlayer ();
-		n.transform.forward = v.normalized;
-		n.transform.Rotate (new Vector3 (0, 180));
+        b.turnToPlayer();
+	
+    }
+    public override void end()
+    {
     }
 }
 
@@ -97,7 +127,7 @@ public class RunningState: AIState{
 //  Can just 
 
 public class Damaged : AIState{
-    public Damaged(Component c) : base(c){}
+    public Damaged(AIBrain b) : base(b){}
     
     public override void checkTransition()
     {
@@ -118,20 +148,14 @@ public class Damaged : AIState{
 }
 
 public class Ninja : MonoBehaviour {
-    private AIState state;
+
 	// Use this for initialization
+    private AIBrain b;
 
 	void Start () {
-        state = new RestingState(this); 
-        state.setAnimator(GetComponent<Animator>());
-        state.start();
+        b = new AIBrain(this);
+        b.setAIState(new RestingState(b));
 	}
-
-    public void transitionToState(AIState s)
-    {
-        state = s;
-        s.start();
-    }
 
     public void run(Vector3 direction)
     {
@@ -143,19 +167,9 @@ public class Ninja : MonoBehaviour {
 
     }
     
-    // TODO: getPlayer() goes on a global scope
-    public void turnToPlayer()
-    {
-        GameObject player = AIState.getPlayer();  
-        Quaternion playerRota = player.transform.rotation; 
-        turn(playerRota);
-		transform.Rotate (new Vector3 (0,180)); 
 
-    }
-	
 	// Update is called once per frame
 	void Update () {
-        state.checkTransition();
-        state.update();	
+        b.update();	
 	}
 }
