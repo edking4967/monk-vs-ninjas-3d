@@ -26,6 +26,7 @@ public class PlayerFireEvent : GameEvent
    
 	public PlayerFireEvent()
    {
+       Debug.Log("PlayerFireEvent constructor");
    }
 
 }

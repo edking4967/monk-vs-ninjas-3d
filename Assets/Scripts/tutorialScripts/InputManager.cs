@@ -24,6 +24,7 @@ public class InputManager : MonoBehaviour
 	private KeyCode s = KeyCode.S;
 	private KeyCode a = KeyCode.A;
 	private KeyCode d = KeyCode.D;
+	private KeyCode f = KeyCode.F;
 
 
 	private KeyCode space = KeyCode.Space;
@@ -44,16 +45,16 @@ public class InputManager : MonoBehaviour
 			GameEventManager.post(new PlayerTurnEvent(new Vector3(0,1,0)));
 	
 		if(Input.GetKey(up))
-			GameEventManager.post(new PlayerMoveEvent(Vector3.left));
+			GameEventManager.post(new PlayerMoveEvent(Vector3.forward));
 
 		if(Input.GetKey(down))
-			GameEventManager.post(new PlayerMoveEvent(Vector3.right));
+			GameEventManager.post(new PlayerMoveEvent(Vector3.back));
 
 		if(Input.GetKeyUp(up))
-			GameEventManager.post(new PlayerStopEvent(Vector3.right));
+			GameEventManager.post(new PlayerStopEvent(Vector3.forward));
 		
 		if(Input.GetKeyUp(down))
-			GameEventManager.post(new PlayerStopEvent(Vector3.left));
+			GameEventManager.post(new PlayerStopEvent(Vector3.back));
 
 		
 		if(Input.GetKey(w))
@@ -68,6 +69,8 @@ public class InputManager : MonoBehaviour
 		if(Input.GetKey(d))
 			GameEventManager.post(new CameraPivotEvent(new Vector3(0,-1,0)));
 
+		if(Input.GetKey(f))
+			GameEventManager.post(new PlayerFireEvent());
 
 		         
 		if (Input.GetKeyDown (space))

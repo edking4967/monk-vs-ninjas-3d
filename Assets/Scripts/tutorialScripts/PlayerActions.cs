@@ -18,7 +18,15 @@ public class PlayerActions : MonoBehaviour, GameEventListener {
 	{
 		if (e is PlayerFireEvent) {
 			Debug.Log ("send fireProjectile");
-			GetComponent<MonkController>().fireProjectile();
+			fireProjectile();
 		}
 	}
+
+    public void fireProjectile()
+    {
+		GameObject proj = (GameObject)Instantiate(Resources.Load("Prefabs/3dproj")); 
+        Vector3 fwd = GetComponent<Rigidbody>().transform.forward;
+		proj.transform.position = GetComponent<Rigidbody>().transform.position;
+        proj.GetComponentInChildren<Rigidbody>().AddForce(1000 * fwd);
+    }
 }

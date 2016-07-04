@@ -31,7 +31,7 @@ public class MonkController : MonoBehaviour {
 		GameObject proj = (GameObject)Instantiate(Resources.Load("projectile")); 
 		proj.transform.position = monk.transform.position;
 		Vector2 vel = new Vector2 (.1f,0);
-		if (!GetComponent<MonkController> ().isFacingRight)
+		if (!isFacingRight)
 			vel = -vel;
 		proj.GetComponent<Rigidbody2D> ().AddForce (vel);
 	}

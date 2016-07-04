@@ -65,16 +65,13 @@ public class PlayerMovement : MonoBehaviour, GameEventListener
 		}
 
 		if (e is PlayerJumpEvent) {
-
 			doJump();
-
 		}
    }
 
 	public void doJump()
 	{
 		GetComponent<Rigidbody>().AddForce(new Vector3(0,500,0));
-
 	}
 	
 }
